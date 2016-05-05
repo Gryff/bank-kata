@@ -12,7 +12,7 @@ namespace BankKataTests
         [Test]
         public void Account_prints_correct_statement()
         {
-            var account = new Account();
+            var account = new Account(new TransactionRepository());
 
             account.Deposit(1000);
             account.Deposit(2000);
