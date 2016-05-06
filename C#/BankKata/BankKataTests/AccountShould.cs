@@ -1,4 +1,5 @@
-﻿using BankKata;
+﻿using System;
+using BankKata;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -13,8 +14,11 @@ namespace BankKataTests
         [SetUp]
         public void SetUp()
         {
+            IClock clock = Substitute.For<IClock>();
+            clock.Now().Returns(DateTime.Today);
             _transactionRepository = Substitute.For<TransactionRepository>();
-            _account = new Account(_transactionRepository);
+            _account = new Account(
+                _transactionRepository, clock, new StatementPrinter());
         }
 
         [Test]
@@ -22,7 +26,8 @@ namespace BankKataTests
         {
             _account.Deposit(500);
 
-            _transactionRepository.Received().RegisterDeposit(500);
+            _transactionRepository.Received().AddDeposit(
+                new Transaction(500, DateTime.Today));
         }
 
         [Test]
@@ -30,7 +35,8 @@ namespace BankKataTests
         {
             _account.Withdraw(200);
 
-            _transactionRepository.Received().RegisterWithdrawal(200);
+            _transactionRepository.Received().AddWithdrawal(
+                new Transaction(-200, DateTime.Today));
         }
     }
 }
