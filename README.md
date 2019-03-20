@@ -1,5 +1,4 @@
 # bank-kata
-My implementation of the Bank Kata
 
 > Given a client makes a deposit of 1000 on 10-01-2012  
 And a deposit of 2000 on 13-01-2012  
